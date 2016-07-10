@@ -14,7 +14,6 @@ import android.graphics.RectF;
 import android.os.IBinder;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
@@ -26,8 +25,9 @@ public class EmbellirClockUpdateService extends Service {
     private Bitmap bitmap;
     private Canvas canvas;
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final int color_main = Color.rgb(50, 170, 70);
-    private final int color_hilight = Color.rgb(50, 140, 50);
+    private final static int color_main_primary = Color.rgb(50, 170, 70);
+    private final static int color_main_secondary = Color.rgb(50, 140, 50);
+    private final static int color_hilight_primary = Color.rgb(150,110,250);
 
     private final float degPer60 = 360.0f / 60.0f;
     private final float degPer12 = 360.0f / 12.0f;
@@ -109,7 +109,7 @@ public class EmbellirClockUpdateService extends Service {
         float ringmax = (radius * 0.2f); //divide into 10 rings
         float hp = (ringmax * 4f);  //hour
         float mp = (ringmax * 3f);  //minute
-        float ssp = (ringmax * 5f); //sunrise/sunset/24h
+        float ssp = (ringmax * 4f); //sunrise/sunset/24h
         float cp = (ringmax * 1f) - (ringmax * 0.5f);  //calendar
         float dp = (ringmax * 1f) + (ringmax * 0.5f);  //day
 
@@ -119,17 +119,17 @@ public class EmbellirClockUpdateService extends Service {
         paint.setStyle(Paint.Style.STROKE);
 
          //24h marker
-        //mPaint.setColor(mCSHl);
-        paint.setStrokeWidth(ringmax - (ringmax * 0.5f));
-        //drawArc(canvas, 0.0f + ssp - radius, 0.0f + ssp - radius, radius - ssp, radius - ssp, hour24Deg - 3f , 6f ,false, paint);
+        paint.setColor(color_hilight_primary);
+        paint.setStrokeWidth(ringmax - (ringmax / 2.5f));
+        drawArc(canvas, 0.0f + ssp - radius, 0.0f + ssp - radius, radius - ssp, radius - ssp, hour24Deg - 6f , 12f ,false, paint);
         //hour ring
         //mPaint.setColor(mCPHlm00);
-        paint.setColor(color_hilight);
+        paint.setColor(color_main_secondary);
         paint.setStrokeWidth(ringmax / 1.5f);
         drawArc(canvas, 0.0f + hp - radius, 0.0f + hp - radius, radius - hp, radius - hp, 0.0f, hourDeg, false, paint);
         //minute ring
         //mPaint.setColor(mCPMain);
-        paint.setColor(color_main);
+        paint.setColor(color_main_primary);
         paint.setStrokeWidth(ringmax / 2.5f);
         drawArc(canvas, 0.0f + mp - radius, 0.0f + mp - radius, radius - mp, radius - mp, 0.0f, minuteDeg,false, paint);
 
